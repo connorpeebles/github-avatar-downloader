@@ -28,6 +28,12 @@ getRepoContributors(args[2], args[3], function(err, result) {
     throw err;
   }
 
+  var dir = "./avatars"
+  if (!fs.existsSync(dir)) {
+    console.log("Creating directory 'avatars' in current directory.")
+    fs.mkdirSync(dir);
+  }
+
   console.log("Downloading images to directory 'avatars'.")
   for (var obj of result) {
     var filePath = "avatars/" + obj.login;
