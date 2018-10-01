@@ -14,11 +14,9 @@ function getRepoContributors(repoOwner, repoName, cb) {
   request(options, function(err, res, body) {
 
     var obj;
-
     if (!err) {
       obj = JSON.parse(body);
     }
-
     cb(err, obj);
   });
 
