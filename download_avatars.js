@@ -1,38 +1,16 @@
 var request = require("request");
 var fs = require("fs");
-var secrets = require("./secrets");
+var getRepoContributors = require("./get_repo_contributors");
 
 var args = process.argv;
 
 console.log("Welcome to the Github Avatar Downloader!");
 
-function getRepoContributors(repoOwner, repoName, cb) {
-
-  var options = {
-    url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
-    headers: {
-      "User-Agent": "request",
-      "Authorization": "token " + secrets.GITHUB_TOKEN
-    }
-  };
-
-  request(options, function(err, res, body) {
-
-    if (err) {
-      console.log("The following error occurred: ", err)
-      throw err;
-    }
-
-    var obj = JSON.parse(body);
-    cb(err, obj);
-  });
-
-}
-
 function downloadImageByURL(url, filePath) {
 
   request.get(url)
          .on("error", function(err) {
+           console.log("An error occurred while attempting to download an image:")
            throw err;
          })
          .pipe(fs.createWriteStream(filePath));
@@ -46,17 +24,16 @@ getRepoContributors(args[2], args[3], function(err, result) {
   }
 
   if (err) {
-    console.log("The following error occurred: ", err)
+    console.log("An error occurred:")
     throw err;
   }
 
+  console.log("Downloading images to directory 'avatars'.")
   for (var obj of result) {
     var filePath = "avatars/" + obj.login;
     var url = obj.avatar_url;
     downloadImageByURL(url, filePath);
   }
+
+  console.log("Downloading completed!");
 });
-
-
-
-// downloadImageByURL("https://sytantris.github.io/http-examples/future.jpg", "./future.jpg");
