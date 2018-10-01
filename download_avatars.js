@@ -1,4 +1,5 @@
 var request = require("request");
+var fs = require("fs");
 var secrets = require("./secrets");
 
 console.log("Welcome to the Github Avatar Downloader!");
@@ -20,8 +21,19 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
 }
 
-getRepoContributors("jquery", "jquery", function(err, result) {
-  for (var obj of result) {
-    console.log(obj.avatar_url);
-  }
-});
+// getRepoContributors("jquery", "jquery", function(err, result) {
+//   for (var obj of result) {
+//     console.log(obj.avatar_url);
+//   }
+// });
+
+function downloadImageByURL(url, filePath) {
+
+  request.get(url)
+         .on("error", function(err) {
+           throw err;
+         })
+         .pipe(fs.createWriteStream("./future.jpg"));
+}
+
+downloadImageByURL("https://sytantris.github.io/http-examples/future.jpg", "./future.jpg");
