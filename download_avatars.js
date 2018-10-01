@@ -21,11 +21,15 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
 }
 
-// getRepoContributors("jquery", "jquery", function(err, result) {
-//   for (var obj of result) {
-//     console.log(obj.avatar_url);
-//   }
-// });
+getRepoContributors("jquery", "jquery", function(err, result) {
+  for (var obj of result) {
+    var filePath = "avatars/" + obj.login;
+    var url = obj.avatar_url;
+    console.log("filepath: ", filePath)
+    console.log("url: ", url)
+    downloadImageByURL(url, filePath);
+  }
+});
 
 function downloadImageByURL(url, filePath) {
 
@@ -33,7 +37,7 @@ function downloadImageByURL(url, filePath) {
          .on("error", function(err) {
            throw err;
          })
-         .pipe(fs.createWriteStream("./future.jpg"));
+         .pipe(fs.createWriteStream(filePath));
 }
 
-downloadImageByURL("https://sytantris.github.io/http-examples/future.jpg", "./future.jpg");
+// downloadImageByURL("https://sytantris.github.io/http-examples/future.jpg", "./future.jpg");
