@@ -22,8 +22,10 @@ getRepoContributors(args[2], args[3], function(err, result) {
 
   // throws error if not enough paramaters given in node
   if (args.length < 4) {
-    console.log("Error: please indicate the repoOwner and repoName")
+    console.log("Error: Please indicate the repository owner and name (as follows):\nnode download_avatars.js repo_owner repo_name");
     return;
+  } else if (args.length > 4) {
+    console.log("Note: More arguments given than required. Input should be as follows:\nnode download_avatars.js repo_owner repo_name")
   }
 
   // throws error if request fails
